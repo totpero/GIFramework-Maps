@@ -47,6 +47,9 @@ namespace GIFrameworkMaps.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasDefaultSchema("giframeworkmaps");
+
+            modelBuilder.ApplyConfiguration();
+
             modelBuilder.Entity<VersionUser>().HasKey(v => new { v.UserId, v.VersionId });
             modelBuilder.Entity<VersionBasemap>().HasKey(v => new { v.BasemapId, v.VersionId });
             modelBuilder.Entity<VersionCategory>().HasKey(v => new { v.CategoryId, v.VersionId });
@@ -63,8 +66,6 @@ namespace GIFrameworkMaps.Data
             modelBuilder.Entity<WebLayerServiceDefinition>().Property(w => w.Type).HasConversion<string>();
             modelBuilder.Entity<Layer>().Property(l => l.ProxyMetaRequests).HasDefaultValue(false);
             modelBuilder.Entity<Layer>().Property(l => l.ProxyMapRequests).HasDefaultValue(false);
-            modelBuilder.Entity<ShortLink>().HasKey(s => new { s.ShortId });
-            modelBuilder.Entity<ShortLink>().Property(s => s.Created).HasDefaultValueSql("CURRENT_TIMESTAMP");
             /*Exclude DB search results from EF Migrations - https://stackoverflow.com/a/65151839/863487 */
             modelBuilder.Entity<Models.Search.DatabaseSearchResult>().HasNoKey().ToTable(nameof(DatabaseSearchResults), t => t.ExcludeFromMigrations());
         }
